@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Manager Game</title>
+</head>
+<body>
+    <h1>Project Manager Game</h1>
+    <p>Tasks Completed: <span id="tasksCompleted">0</span></p>
+    <p>Employee Productivity: <span id="employeeProductivity">100%</span></p>
+    <button onclick="improveProductivity()">Improve Productivity</button>
+
+    <script>
+        function improveProductivity() {
+            // Call the backend API to improve productivity
+            fetch('/game/improve').then(response => response.json()).then(data => {
+                // Update frontend values
+                document.getElementById('employeeProductivity').innerText = data.employeeProductivity + '%';
+            });
+        }
+
+        // Periodically update the game status on the frontend
+        setInterval(() => {
+            fetch('/game/status').then(response => response.json()).then(data => {
+                document.getElementById('tasksCompleted').innerText = data.tasksCompleted.toFixed(2);
+                document.getElementById('employeeProductivity').innerText = data.employeeProductivity + '%';
+            });
+        }, 1000);
+    </script>
+</body>
+</html>
